@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Image as LucideImage,
   Zap,
@@ -18,6 +19,14 @@ interface GlitchType {
 
 export default function SpectrogramGallery() {
   const [selectedGlitch, setSelectedGlitch] = useState<string | null>(null);
+  const [spectrogramUrls, setSpectrogramUrls] = useState<
+    Record<string, string>
+  >({});
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const glitchTypes: GlitchType[] = [
     {
@@ -49,63 +58,103 @@ export default function SpectrogramGallery() {
     },
   ];
 
-  const generateSpectrogram = (pattern: string) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 300;
-    canvas.height = 200;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return "";
+  useEffect(() => {
+    if (isClient) {
+      const glitchTypesData = [
+        {
+          id: "blip",
+          name: "Blip",
+          description:
+            "Transientes curtos e de banda larga, geralmente causados por acoplamentos mecânicos",
+          icon: Zap,
+          color: "yellow",
+          pattern: "blip",
+        },
+        {
+          id: "whistle",
+          name: "Whistle",
+          description:
+            "Sinais de frequência crescente, possivelmente de origem eletrônica ou ambiental",
+          icon: Wind,
+          color: "cyan",
+          pattern: "whistle",
+        },
+        {
+          id: "scattered-light",
+          name: "Scattered Light",
+          description:
+            "Padrões em arco causados por dispersão de luz nos espelhos do interferômetro",
+          icon: WavesIcon,
+          color: "purple",
+          pattern: "scattered",
+        },
+      ];
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-    gradient.addColorStop(0, "#1e293b");
-    gradient.addColorStop(1, "#0f172a");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 300, 200);
+      const generateSpectrogram = (pattern: string) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 300;
+        canvas.height = 200;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return "";
 
-    ctx.strokeStyle = "rgba(59, 130, 246, 0.3)";
-    ctx.lineWidth = 0.5;
-    for (let i = 0; i < 10; i++) {
-      ctx.beginPath();
-      ctx.moveTo(0, i * 20);
-      ctx.lineTo(300, i * 20);
-      ctx.stroke();
+        const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+        gradient.addColorStop(0, "#1e293b");
+        gradient.addColorStop(1, "#0f172a");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 300, 200);
+
+        ctx.strokeStyle = "rgba(59, 130, 246, 0.3)";
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < 10; i++) {
+          ctx.beginPath();
+          ctx.moveTo(0, i * 20);
+          ctx.lineTo(300, i * 20);
+          ctx.stroke();
+        }
+
+        if (pattern === "blip") {
+          const centerX = 150;
+          const centerY = 100;
+          for (let i = 0; i < 30; i++) {
+            const alpha = 1 - i / 30;
+            const size = i * 2;
+            ctx.fillStyle = `rgba(234, 179, 8, ${alpha * 0.8})`;
+            ctx.fillRect(centerX - size / 2, centerY - size / 2, size, size);
+          }
+        } else if (pattern === "whistle") {
+          ctx.strokeStyle = "rgba(6, 182, 212, 0.8)";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          for (let x = 50; x < 250; x++) {
+            const y = 150 - (x - 50) * 0.5 + Math.sin(x * 0.1) * 5;
+            if (x === 50) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          ctx.strokeStyle = "rgba(6, 182, 212, 0.3)";
+          ctx.lineWidth = 8;
+          ctx.stroke();
+        } else if (pattern === "scattered") {
+          for (let i = 0; i < 5; i++) {
+            ctx.strokeStyle = `rgba(168, 85, 247, ${0.6 - i * 0.1})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(150, 100, 20 + i * 15, -Math.PI / 3, Math.PI / 3);
+            ctx.stroke();
+          }
+        }
+
+        return canvas.toDataURL();
+      };
+
+      const urls: Record<string, string> = {};
+      glitchTypesData.forEach((glitch) => {
+        urls[glitch.pattern] = generateSpectrogram(glitch.pattern);
+      });
+      setSpectrogramUrls(urls);
     }
-
-    if (pattern === "blip") {
-      const centerX = 150;
-      const centerY = 100;
-      for (let i = 0; i < 30; i++) {
-        const alpha = 1 - i / 30;
-        const size = i * 2;
-        ctx.fillStyle = `rgba(234, 179, 8, ${alpha * 0.8})`;
-        ctx.fillRect(centerX - size / 2, centerY - size / 2, size, size);
-      }
-    } else if (pattern === "whistle") {
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.8)";
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      for (let x = 50; x < 250; x++) {
-        const y = 150 - (x - 50) * 0.5 + Math.sin(x * 0.1) * 5;
-        if (x === 50) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.3)";
-      ctx.lineWidth = 8;
-      ctx.stroke();
-    } else if (pattern === "scattered") {
-      for (let i = 0; i < 5; i++) {
-        ctx.strokeStyle = `rgba(168, 85, 247, ${0.6 - i * 0.1})`;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(150, 100, 20 + i * 15, -Math.PI / 3, Math.PI / 3);
-        ctx.stroke();
-      }
-    }
-
-    return canvas.toDataURL();
-  };
+  }, [isClient]);
 
   return (
     <section className="relative py-24">
@@ -187,12 +236,22 @@ export default function SpectrogramGallery() {
                   </div>
 
                   <div className="bg-slate-950/50 rounded-lg p-2 mb-4 border border-slate-800">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={generateSpectrogram(glitch.pattern)}
-                      alt={`${glitch.name} spectrogram`}
-                      className="w-full rounded"
-                    />
+                    {spectrogramUrls[glitch.pattern] ? (
+                      <Image
+                        src={spectrogramUrls[glitch.pattern]}
+                        alt={`${glitch.name} spectrogram`}
+                        width={300}
+                        height={200}
+                        className="w-full rounded"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-full h-40 bg-slate-800/50 rounded flex items-center justify-center">
+                        <div className="animate-pulse text-slate-400">
+                          Gerando espectrograma...
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <p className="text-slate-400 text-sm leading-relaxed">

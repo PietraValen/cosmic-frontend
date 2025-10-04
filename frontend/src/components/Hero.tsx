@@ -1,12 +1,37 @@
 "use client";
+import { useState, useEffect } from "react";
 import { Waves, ChevronDown } from "lucide-react";
 
 interface HeroProps {
   scrollY: number;
 }
 
+interface Particle {
+  left: string;
+  top: string;
+  width: string;
+  height: string;
+  animationDelay: string;
+  animationDuration: string;
+}
+
 export default function Hero({ scrollY }: HeroProps) {
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const [isClient, setIsClient] = useState(false);
   const parallaxOffset = scrollY * 0.5;
+
+  useEffect(() => {
+    setIsClient(true);
+    const generatedParticles = [...Array(50)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      width: `${Math.random() * 4 + 1}px`,
+      height: `${Math.random() * 4 + 1}px`,
+      animationDelay: `${Math.random() * 3}s`,
+      animationDuration: `${Math.random() * 3 + 2}s`,
+    }));
+    setParticles(generatedParticles);
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -15,20 +40,21 @@ export default function Hero({ scrollY }: HeroProps) {
         style={{ transform: `translateY(${parallaxOffset}px)` }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-blue-950/30 to-transparent" />
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute bg-blue-400/20 rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 4 + 1}px`,
-              height: `${Math.random() * 4 + 1}px`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`,
-            }}
-          />
-        ))}
+        {isClient &&
+          particles.map((particle, i) => (
+            <div
+              key={i}
+              className="absolute bg-blue-400/20 rounded-full animate-pulse"
+              style={{
+                left: particle.left,
+                top: particle.top,
+                width: particle.width,
+                height: particle.height,
+                animationDelay: particle.animationDelay,
+                animationDuration: particle.animationDuration,
+              }}
+            />
+          ))}
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
