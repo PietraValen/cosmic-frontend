@@ -30,7 +30,7 @@ export default function LoginPage() {
 
       // Redirecionar após sucesso
       // router.push('/dashboard');
-    } catch (error) {
+    } catch {
       setErrors({ general: "Erro ao fazer login. Tente novamente." });
     } finally {
       setIsLoading(false);
@@ -146,16 +146,6 @@ export default function LoginPage() {
                 <p className="text-sm text-red-400">{errors.general}</p>
               </div>
             )}
-
-            {/* Esqueci a senha */}
-            <div className="flex justify-end">
-              <Link
-                href="/auth/forgot-password"
-                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                Esqueci minha senha
-              </Link>
-            </div>
 
             {/* Botão Submit */}
             <button

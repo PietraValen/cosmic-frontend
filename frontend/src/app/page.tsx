@@ -11,6 +11,7 @@ import GlobeVisualization from "../components/GlobeVisualization";
 import GravitationalWavesPropagation from "../components/GravitationalWavesPropagation";
 import InteractiveScientificMap from "../components/InteractiveScientificMap";
 import NeuralNetworkFlow from "../components/NeuralNetworkFlow";
+import CallToAction from "../components/CallToAction";
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
@@ -77,6 +78,8 @@ function App() {
 
       <SpectrogramGallery />
       <Statistics />
+
+      <CallToAction />
 
       <footer className="relative z-10 border-t border-slate-800 py-12 mt-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
