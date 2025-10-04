@@ -20,7 +20,7 @@ interface Connection {
 export default function NeuralNetworkFlow() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [activeStep, setActiveStep] = useState(0);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(0);
 
   const nodes: Node[] = useMemo(
     () => [
@@ -319,47 +319,73 @@ export default function NeuralNetworkFlow() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    nodes.forEach((node) => (node.active = false));
-    connections.forEach((conn) => (conn.active = false));
+useEffect(() => {
+  // Reset all nodes and connections
+  nodes.forEach((node) => (node.active = false));
+  connections.forEach((conn) => (conn.active = false));
 
-    if (activeStep === 0) {
-      ["data1", "data2", "data3"].forEach((id) => {
-        const node = nodes.find((n) => n.id === id);
-        if (node) node.active = true;
-      });
-    } else if (activeStep === 1) {
-      ["input1", "input2", "input3", "input4", "input5"].forEach((id) => {
-        const node = nodes.find((n) => n.id === id);
-        if (node) node.active = true;
-      });
-      connections.slice(0, 5).forEach((conn) => (conn.active = true));
-    } else if (activeStep === 2) {
-      [
-        "hidden1",
-        "hidden2",
-        "hidden3",
-        "hidden4",
-        "hidden5",
-        "hidden6",
-        "hidden7",
-      ].forEach((id) => {
-        const node = nodes.find((n) => n.id === id);
-        if (node) node.active = true;
-      });
-      connections.slice(5, 21).forEach((conn) => (conn.active = true));
-    } else if (activeStep === 3) {
-      ["output1", "output2", "output3", "output4"].forEach((id) => {
-        const node = nodes.find((n) => n.id === id);
-        if (node) node.active = true;
-      });
-      connections.slice(21, 27).forEach((conn) => (conn.active = true));
-    } else if (activeStep === 4) {
-      const humanNode = nodes.find((n) => n.id === "human");
-      if (humanNode) humanNode.active = true;
-      connections.slice(27).forEach((conn) => (conn.active = true));
-    }
-  }, [activeStep, nodes, connections]);
+  if (activeStep === 0) {
+    // Step 0: Data sources
+    ["data1", "data2", "data3"].forEach((id) => {
+      const node = nodes.find((n) => n.id === id);
+      if (node) node.active = true;
+    });
+  } 
+  else if (activeStep === 1) {
+    // Step 1: Inputs (feature extraction)
+    ["input1", "input2", "input3", "input4", "input5"].forEach((id) => {
+      const node = nodes.find((n) => n.id === id);
+      if (node) node.active = true;
+    });
+    // Only activate data → input connections
+    connections
+      .filter((c) => c.from.startsWith("data") && c.to.startsWith("input"))
+      .forEach((conn) => (conn.active = true));
+  } 
+  else if (activeStep === 2) {
+    // Step 2: Neural processing (hidden layers)
+    [
+      "hidden1",
+      "hidden2",
+      "hidden3",
+      "hidden4",
+      "hidden5",
+      "hidden6",
+      "hidden7",
+    ].forEach((id) => {
+      const node = nodes.find((n) => n.id === id);
+      if (node) node.active = true;
+    });
+    // Activate input → hidden and hidden → hidden connections
+    connections
+      .filter(
+        (c) =>
+          (c.from.startsWith("input") && c.to.startsWith("hidden")) ||
+          (c.from.startsWith("hidden") && c.to.startsWith("hidden"))
+      )
+      .forEach((conn) => (conn.active = true));
+  } 
+  else if (activeStep === 3) {
+    // Step 3: Output classification
+    ["output1", "output2", "output3", "output4"].forEach((id) => {
+      const node = nodes.find((n) => n.id === id);
+      if (node) node.active = true;
+    });
+    // Only activate hidden → output connections
+    connections
+      .filter((c) => c.from.startsWith("hidden") && c.to.startsWith("output"))
+      .forEach((conn) => (conn.active = true));
+  } 
+  else if (activeStep === 4) {
+    // Step 4: Human validation
+    const humanNode = nodes.find((n) => n.id === "human");
+    if (humanNode) humanNode.active = true;
+    // Only activate output → human connections
+    connections
+      .filter((c) => c.from.startsWith("output") && c.to === "human")
+      .forEach((conn) => (conn.active = true));
+  }
+}, [activeStep, nodes, connections]);
 
   const stages = [
     {

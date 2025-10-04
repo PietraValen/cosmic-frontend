@@ -84,17 +84,19 @@ export default function Hero({ scrollY }: HeroProps) {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/50">
-            Explorar o Projeto
-          </button>
+          <div className="relative flex items-center justify-center gap-4">
+            <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce mb-1">
+              <ChevronDown className="w-8 h-8 text-slate-400" />
+            </div>
+            <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/50">
+              Explorar o Projeto
+            </button>
+          </div>
           <button className="px-8 py-4 bg-slate-800 hover:bg-slate-700 rounded-lg font-semibold text-lg transition-all duration-300 border border-slate-700">
             Saiba Mais
           </button>
         </div>
 
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-slate-400" />
-        </div>
       </div>
     </section>
   );

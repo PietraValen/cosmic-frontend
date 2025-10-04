@@ -35,8 +35,7 @@ function App() {
               Rede Global de Detecção
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Visualize a rede mundial de detectores de ondas gravitacionais
-              trabalhando em conjunto
+              Visualize a rede mundial de detectores de ondas gravitacionais trabalhando em conjunto
             </p>
           </div>
           <GlobeVisualization />
