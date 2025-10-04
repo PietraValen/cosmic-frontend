@@ -7,19 +7,21 @@ import {
   useContext,
   ReactNode,
 } from "react";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
+import apiService, { User } from "@/services/api";
+import { getAuthToken, removeAuthToken } from "@/config";
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; message: string }>;
+  register: (
+    name: string,
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; message: string }>;
+  logout: () => Promise<void>;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
@@ -34,23 +36,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Verificar se há um token salvo no localStorage
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem("authToken");
+        const token = getAuthToken();
         if (token) {
-          // Verificar se o token é válido
-          const response = await fetch("/api/auth/me", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
-            setUser(userData);
-          } else {
-            localStorage.removeItem("authToken");
+          // Verificar se há dados do usuário salvos
+          const savedUser = localStorage.getItem("cosmic-user-data");
+          if (savedUser) {
+            setUser(JSON.parse(savedUser));
           }
         }
       } catch (error) {
         console.error("Erro ao verificar autenticação:", error);
-        localStorage.removeItem("authToken");
+        removeAuthToken();
       } finally {
         setIsLoading(false);
       }
@@ -59,59 +55,63 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; message: string }> => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await apiService.login({ email, password });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Erro ao fazer login");
+      if (response.success && response.user) {
+        setUser(response.user);
+        return { success: true, message: response.message };
+      } else {
+        return { success: false, message: response.message };
       }
-
-      const { token, user: userData } = await response.json();
-
-      localStorage.setItem("authToken", token);
-      setUser(userData);
     } catch (error) {
-      throw error;
+      const message =
+        error instanceof Error ? error.message : "Erro ao fazer login";
+      return { success: false, message };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; message: string }> => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
+      const response = await apiService.register({ name, email, password });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Erro ao criar conta");
+      if (response.success && response.user) {
+        setUser(response.user);
+        return { success: true, message: response.message };
+      } else {
+        return { success: false, message: response.message };
       }
-
-      const { token, user: userData } = await response.json();
-
-      localStorage.setItem("authToken", token);
-      setUser(userData);
     } catch (error) {
-      throw error;
+      const message =
+        error instanceof Error ? error.message : "Erro ao criar conta";
+      return { success: false, message };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("authToken");
-    setUser(null);
+  const logout = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await apiService.logout();
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    } finally {
+      setUser(null);
+      setIsLoading(false);
+    }
   };
 
   const value = {

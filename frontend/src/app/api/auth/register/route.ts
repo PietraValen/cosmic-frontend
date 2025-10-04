@@ -73,8 +73,9 @@ export async function POST(request: NextRequest) {
         email: newUser.email,
         role: newUser.role,
       },
-      process.env.JWT_SECRET || "seu-jwt-secret",
-      { expiresIn: "7d" }
+      process.env.JWT_SECRET ||
+        "super_secret_jwt_key_for_cosmic_frontend_dev_2025",
+      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
 
     // Retornar usuário (sem senha) e token
