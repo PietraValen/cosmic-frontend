@@ -17,8 +17,7 @@ export default function Galaxy3DPage() {
             🔵 <span className="text-cyan-400">Azul</span>: Regiões Estáveis
           </p>
           <p>
-            ⭐ <span className="text-yellow-400">Dourado</span>: Centro
-            Galáctico
+            ⚪ <span className="text-gray-400">Cinza</span>: Região Desconhecida
           </p>
           <p className="mt-2 text-xs text-gray-300">
             Use o mouse para rotacionar • Scroll para zoom

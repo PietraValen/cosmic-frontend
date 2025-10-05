@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { UserPlus, LogIn, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 interface Particle {
   left: string;
@@ -108,7 +107,7 @@ export default function CallToAction() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        {/* <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/auth/register"
             className="group flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
@@ -126,11 +125,11 @@ export default function CallToAction() {
             <LogIn className="w-5 h-5" />
             <span>Já sou membro</span>
           </Link>
-        </div>
+        </div> */}
 
-        <p className="text-sm text-slate-500 mt-6">
+        {/* <p className="text-sm text-slate-500 mt-6">
           ✨ Sem custos ocultos • 🔒 Dados protegidos • 🚀 Acesso instantâneo
-        </p>
+        </p> */}
       </div>
     </section>
   );

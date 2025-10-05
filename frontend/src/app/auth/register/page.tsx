@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -15,6 +17,9 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const { register } = useAuth();
+  const router = useRouter();
 
   // Validação de senha
   const validatePassword = (password: string) => {
@@ -76,23 +81,24 @@ export default function RegisterPage() {
     }
 
     try {
-      // Aqui você faria a chamada para sua API de registro
-      // const response = await fetch('/api/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     name: formData.name,
-      //     email: formData.email,
-      //     password: formData.password,
-      //   }),
-      // });
+      console.log("🚀 Iniciando registro...");
 
-      // Simulação de registro
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const success = await register(
+        formData.name,
+        formData.email,
+        formData.password
+      );
 
-      // Redirecionar para verificação de email ou login
-      // router.push('/auth/verify-email');
+      if (success) {
+        console.log("✅ Registro bem-sucedido, redirecionando...");
+        router.push("/dashboard");
+      } else {
+        setErrors({
+          general: "Erro ao criar conta. Verifique os dados e tente novamente.",
+        });
+      }
     } catch (error) {
+      console.error("❌ Erro no registro:", error);
       setErrors({ general: "Erro ao criar conta. Tente novamente." });
     } finally {
       setIsLoading(false);

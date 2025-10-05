@@ -15,6 +15,7 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   checkAuth: () => Promise<void>;
 }
@@ -32,12 +33,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userData = localStorage.getItem("cosmic-user-data");
 
       if (token && userData) {
-        setUser(JSON.parse(userData));
+        // Verificar se o token ainda é válido com o backend
+        try {
+          const response = await fetch("http://localhost:8000/api/user", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          });
+
+          if (response.ok) {
+            const validUserData = await response.json();
+            setUser(validUserData);
+          } else {
+            // Token inválido, limpar dados
+            localStorage.removeItem("cosmic-auth-token");
+            localStorage.removeItem("cosmic-user-data");
+            setUser(null);
+          }
+        } catch (apiError) {
+          // Erro de conexão, limpar dados para forçar novo login
+          console.log(
+            "Erro ao validar token, limpando autenticação:",
+            apiError
+          );
+          localStorage.removeItem("cosmic-auth-token");
+          localStorage.removeItem("cosmic-user-data");
+          setUser(null);
+        }
       } else {
         setUser(null);
       }
     } catch (error) {
       console.error("Erro ao verificar autenticação:", error);
+      localStorage.removeItem("cosmic-auth-token");
+      localStorage.removeItem("cosmic-user-data");
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -62,6 +92,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const register = async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<boolean> => {
+    try {
+      setIsLoading(true);
+      const response = await apiService.register({ name, email, password });
+
+      if (response.success && response.user) {
+        setUser(response.user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Erro no registro:", error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("cosmic-auth-token");
     localStorage.removeItem("cosmic-user-data");
@@ -79,6 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isLoading,
     isAuthenticated: !!user,
     login,
+    register,
     logout,
     checkAuth,
   };

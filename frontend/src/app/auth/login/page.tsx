@@ -8,8 +8,8 @@ import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
-    email: "test@test.com",
-    password: "123456",
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +23,12 @@ export default function LoginPage() {
       router.push("/dashboard");
     }
   }, [isAuthenticated, router]);
+
+  const clearAuthData = () => {
+    localStorage.removeItem("cosmic-auth-token");
+    localStorage.removeItem("cosmic-user-data");
+    window.location.reload();
+  };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -186,15 +192,15 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-            <p className="text-blue-300 text-sm font-medium mb-2">
-              Credenciais de teste:
-            </p>
-            <p className="text-blue-200 text-xs">
-              <strong>Email:</strong> test@test.com
-              <br />
-              <strong>Senha:</strong> 123456
-            </p>
+          {/* Botão para resolver problemas de cache/autenticação */}
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={clearAuthData}
+              className="text-xs text-slate-500 hover:text-slate-400 underline transition-colors"
+            >
+              Limpar dados de autenticação (resolver problemas de login)
+            </button>
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-800 text-center">
