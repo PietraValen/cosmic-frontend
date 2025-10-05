@@ -1,6 +1,6 @@
 // API Route para registro (Next.js App Router)
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 // Simulação de banco de dados - substitua por sua implementação real

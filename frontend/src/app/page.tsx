@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
-import TheProblem from "../components/TheProblem";
+import TheProblem from "../components/TheProblem"; 
 import TheSolution from "../components/TheSolution";
 import HowItWorks from "../components/HowItWorks";
 import SpectrogramGallery from "../components/SpectrogramGallery";
@@ -12,6 +12,7 @@ import GravitationalWavesPropagation from "../components/GravitationalWavesPropa
 import InteractiveScientificMap from "../components/InteractiveScientificMap";
 import NeuralNetworkFlow from "../components/NeuralNetworkFlow";
 import CallToAction from "../components/CallToAction";
+import AnomalyMap from "../components/AnomalyMap";
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
@@ -75,6 +76,7 @@ function App() {
         </div>
       </section>
 
+      
       <SpectrogramGallery />
       <Statistics />
 
