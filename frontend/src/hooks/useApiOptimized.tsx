@@ -72,7 +72,7 @@ export function useApi<T>(
       if (cacheKey) {
         const cachedData = getCachedData(cacheKey);
         if (cachedData) {
-          setData(cachedData);
+          setData(cachedData as T);
           setLoading(false);
           return;
         }

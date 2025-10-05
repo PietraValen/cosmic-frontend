@@ -177,3 +177,66 @@ export function useApiSimple<T>(): {
     reset,
   };
 }
+
+// Hook para mutations (POST, PUT, DELETE)
+export function useMutation<T>(): {
+  loading: boolean;
+  error: string | null;
+  execute: (apiFunction: () => Promise<ApiResponse<T>>) => Promise<T | null>;
+  reset: () => void;
+} {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  const execute = useCallback(
+    async (apiFunction: () => Promise<ApiResponse<T>>): Promise<T | null> => {
+      if (!mountedRef.current) return null;
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await apiFunction();
+
+        if (!mountedRef.current) return null;
+
+        if (response.success && response.data !== undefined) {
+          setError(null);
+          return response.data;
+        } else {
+          setError(response.message || "Erro na operação");
+          return null;
+        }
+      } catch (err) {
+        if (!mountedRef.current) return null;
+        setError(err instanceof Error ? err.message : "Erro desconhecido");
+        return null;
+      } finally {
+        if (mountedRef.current) {
+          setLoading(false);
+        }
+      }
+    },
+    []
+  );
+
+  const reset = useCallback(() => {
+    setLoading(false);
+    setError(null);
+  }, []);
+
+  return {
+    loading,
+    error,
+    execute,
+    reset,
+  };
+}
