@@ -1,6 +1,6 @@
 // API Route para login (Next.js App Router)
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 // Simulação de banco de dados - substitua por sua implementação real
@@ -9,7 +9,14 @@ const users = [
     id: "1",
     name: "João Silva",
     email: "joao@example.com",
-    password: "$2b$10$...", // Hash da senha "123456"
+    password: "$2b$10$5ICjxCMadMIx5DAr7sLBMOMuC0cSZZpegnR/Si7yCQM7Gzy2dhCqW", // Hash da senha "123456"
+    role: "user",
+  },
+  {
+    id: "2",
+    name: "Teste User",
+    email: "test@test.com",
+    password: "$2b$10$5ICjxCMadMIx5DAr7sLBMOMuC0cSZZpegnR/Si7yCQM7Gzy2dhCqW", // Hash da senha "123456"
     role: "user",
   },
 ];
