@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,8 +14,6 @@ interface AnomalyData {
 }
 
 export const AnomalyPoints = () => {
-  const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
-
   // Dados inventados
   const anomalies = generateMockData();
 
@@ -36,8 +34,6 @@ export const AnomalyPoints = () => {
         <AnomalyPoint
           key={point.id}
           data={point}
-          isHovered={hoveredPoint === point.id}
-          onHover={setHoveredPoint}
         />
       ))}
     </group>
@@ -46,29 +42,29 @@ export const AnomalyPoints = () => {
 
 interface AnomalyPointProps {
   data: AnomalyData;
-  isHovered: boolean;
-  onHover: (id: string | null) => void;
 }
 
-const AnomalyPoint = ({ data, isHovered, onHover }: AnomalyPointProps) => {
+const AnomalyPoint = ({ data }: AnomalyPointProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
   const textGroupRef = useRef<THREE.Group>(null);
 
+  // Estado local para controlar hover deste ponto
+  const [isHovered, setIsHovered] = useState(false);
+
   useFrame((state) => {
-    // Animação pulsante
     if (meshRef.current) {
       if (data.isAnomaly) {
         const scale =
           1 + Math.sin(state.clock.elapsedTime * 2) * 0.2 * data.intensity;
         meshRef.current.scale.setScalar(scale);
-      }
-      if (glowRef.current) {
-        glowRef.current.scale.setScalar(isHovered ? 3 : 2);
+      } else {
+        meshRef.current.scale.setScalar(1);
       }
     }
-
-    // Texto sempre voltado pra câmera
+    if (glowRef.current) {
+      glowRef.current.scale.setScalar(isHovered ? 3 : 2);
+    }
     if (textGroupRef.current && isHovered) {
       textGroupRef.current.lookAt(state.camera.position);
     }
@@ -76,21 +72,20 @@ const AnomalyPoint = ({ data, isHovered, onHover }: AnomalyPointProps) => {
 
   const color = data.isAnomaly ? "#FF4444" : "#00D9FF";
   const emissiveIntensity = data.isAnomaly ? data.intensity * 2 : 1;
-  const size = data.isAnomaly ? 0.3 + data.intensity * 0.3 : 0.2;
+  // const size = data.isAnomaly ? 0.3 + data.intensity * 0.3 : 0.2;
+  const size =  0.2;
 
   return (
     <group position={data.position}>
-      {/* Brilho */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[size * 2, 16, 16]} />
         <meshBasicMaterial color={color} transparent opacity={0.1} />
       </mesh>
 
-      {/* Esfera principal */}
       <mesh
         ref={meshRef}
-        onPointerEnter={() => onHover(data.id)}
-        onPointerLeave={() => onHover(null)}
+        onPointerEnter={() => setIsHovered(true)}
+        onPointerLeave={() => setIsHovered(false)}
       >
         <sphereGeometry args={[size, 32, 32]} />
         <meshStandardMaterial
@@ -100,16 +95,17 @@ const AnomalyPoint = ({ data, isHovered, onHover }: AnomalyPointProps) => {
         />
       </mesh>
 
-      {/* Texto */}
+      {/* Texto só aparece quando hover */}
       {isHovered && (
         <group ref={textGroupRef} position={[0, size + 1, 0]}>
           <Text
-            fontSize={0.8}
+            fontSize={0.4}
             color="white"
-            anchorX="center"
+            anchorX="right"
             anchorY="middle"
-            outlineWidth={0.1}
+            outlineWidth={0.2}
             outlineColor="black"
+            // pointerEvents="none" // evita o texto bloquear o mouse
           >
             {data.name || `Point ${data.id}`}
             {"\n"}
@@ -129,7 +125,6 @@ const AnomalyPoint = ({ data, isHovered, onHover }: AnomalyPointProps) => {
   );
 };
 
-// 🔹 Dados mockados
 function generateMockData(): AnomalyData[] {
   const points: AnomalyData[] = [];
 

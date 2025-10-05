@@ -76,7 +76,7 @@ function App() {
         </div>
       </section>
 
-      
+      <AnomalyMap/>
       <SpectrogramGallery />
       <Statistics />
 
