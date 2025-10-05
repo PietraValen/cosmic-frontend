@@ -3,6 +3,7 @@
 import { useRequireAuth } from "@/contexts/AuthContext";
 import { useState, useEffect, useCallback } from "react";
 import { useApi } from "@/hooks/useApi";
+import { api } from "@/services/api";
 import Link from "next/link";
 import {
   Activity,
@@ -69,7 +70,9 @@ export default function ActivityPage() {
     data: apiActivities,
     loading: activitiesLoading,
     error: activitiesError,
-  } = useApi(() => ({ getUserActivity: { limit: 50 } }), [user]);
+  } = useApi(() => api.getUserActivity({ limit: 50 }), {
+    dependencies: [user],
+  });
 
   // Função para transformar dados da API no formato da interface
   const transformApiActivities = useCallback(
@@ -137,10 +140,8 @@ export default function ActivityPage() {
 
   // Atualizar atividades quando dados da API chegarem
   useEffect(() => {
-    if (apiActivities?.getUserActivity?.data) {
-      const transformedActivities = transformApiActivities(
-        apiActivities.getUserActivity.data
-      );
+    if (apiActivities) {
+      const transformedActivities = transformApiActivities(apiActivities);
       setActivities(transformedActivities);
       setFilteredActivities(transformedActivities);
 

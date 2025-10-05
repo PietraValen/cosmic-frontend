@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Otimizações de performance
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ["lucide-react"],
   },
 
@@ -14,40 +13,6 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/webp", "image/avif"],
     minimumCacheTTL: 60,
-  },
-
-  // Otimização do bundle
-  webpack: (config, { dev, isServer }) => {
-    // Otimizações para produção
-    if (!dev && !isServer) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: "all",
-          cacheGroups: {
-            default: {
-              minChunks: 2,
-              priority: -20,
-              reuseExistingChunk: true,
-            },
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: "vendors",
-              priority: -10,
-              chunks: "all",
-            },
-            lucide: {
-              test: /[\\/]node_modules[\\/](lucide-react)[\\/]/,
-              name: "lucide",
-              chunks: "all",
-              priority: 10,
-            },
-          },
-        },
-      };
-    }
-
-    return config;
   },
 
   // Headers para cache
