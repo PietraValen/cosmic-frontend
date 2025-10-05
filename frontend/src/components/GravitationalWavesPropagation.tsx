@@ -205,14 +205,16 @@ export default function GravitationalWavesPropagation() {
         />
       </Canvas>
 
-      <div className="absolute bottom-6 left-6 bg-slate-900/80 backdrop-blur-sm px-4 py-3 rounded-lg border border-cyan-500/30">
-        <p className="text-sm text-cyan-400 font-semibold mb-1">
-          Fusão de Buracos Negros
-        </p>
-        <p className="text-xs text-slate-300">
-          Ondas gravitacionais propagando pelo espaço-tempo
-        </p>
-      </div>
+    <div className="absolute bottom-20 bg-slate-900/80 backdrop-blur-sm px-4 py-3 rounded-tr-lg border border-cyan-500/30 shadow-lg z-1 ">
+      <p className="text-sm text-cyan-400 font-semibold mb-1">
+        Fusão de Buracos Negros
+      </p>
+      <p className="text-xs text-slate-300 leading-relaxed max-w-[250px]">
+        Ondas gravitacionais distorcem o tecido do espaço-tempo,
+        espalhando-se em anéis luminosos através do cosmos.
+      </p>
+    </div>
+
     </div>
   );
 }
