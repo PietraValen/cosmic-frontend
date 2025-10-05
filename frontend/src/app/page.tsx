@@ -12,7 +12,7 @@ import GravitationalWavesPropagation from "../components/GravitationalWavesPropa
 import InteractiveScientificMap from "../components/InteractiveScientificMap";
 import NeuralNetworkFlow from "../components/NeuralNetworkFlow";
 import CallToAction from "../components/CallToAction";
-import AnomalyMap from "../components/AnomalyMap";
+import Footer from "@/components/Footer";
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
@@ -76,23 +76,12 @@ function App() {
         </div>
       </section>
 
-      <AnomalyMap/>
       <SpectrogramGallery />
       <Statistics />
 
       <CallToAction />
 
-      <footer className="relative z-10 border-t border-slate-800 py-12 mt-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-slate-400">
-            <p className="text-lg font-light">Caçadores de Falhas</p>
-            <p className="text-sm mt-2">
-              Desvendando os mistérios do universo através de ondas
-              gravitacionais
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
