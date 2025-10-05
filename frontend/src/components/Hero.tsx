@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Waves } from "lucide-react";
+import Link from "next/link";
+import { Waves, ChevronDown, LogIn, UserPlus } from "lucide-react";
 
 interface HeroProps {
   scrollY: number;
@@ -103,32 +104,7 @@ export default function Hero({ scrollY }: HeroProps) {
             Saiba Mais
           </Link>
         </div>
-
-        {/* Auth Buttons */}
-        {/* <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <Link
-            href="/auth/login"
-            className="flex items-center space-x-2 px-6 py-3 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-600 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-slate-500/20"
-          >
-            <LogIn className="w-5 h-5" />
-            <span>Já tenho conta</span>
-          </Link>
-          <Link
-            href="/auth/register"
-            className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-purple-500/30"
-          >
-            <UserPlus className="w-5 h-5" />
-            <span>Criar conta gratuita</span>
-          </Link>
-        </div> */}
-
-<<<<<<< HEAD
-        {/* <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-slate-400" />
-        </div> */}
-=======
->>>>>>> explorer
-      </div>
+        </div>
     </section>
   );
 }
