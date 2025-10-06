@@ -143,11 +143,11 @@ export default function HowItWorks() {
                 </div>
 
                 {!isLast && (
-                  <div className="flex justify-center mb-16">
+                  <div className="flex justify-center mb-16 animate-pulse ">
                     <div className="flex flex-col items-center gap-2">
                       <ArrowRight
-                        className={`w-8 h-8 ${colorScheme.arrow} animate-bounce`}
-                        style={{ transform: "rotate(90deg)" }}
+                        className={`w-8 h-8 ${colorScheme.arrow} rotate-90`}
+                        
                       />
                       <div
                         className={`w-1 h-12 bg-gradient-to-b ${colorScheme.bg}`}

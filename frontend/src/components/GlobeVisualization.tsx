@@ -181,9 +181,8 @@ function Stars() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
+          args={[starPositions, 3]}
           count={starPositions.length / 3}
-          array={starPositions}
-          itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial size={0.1} color="#ffffff" transparent opacity={0.6} />

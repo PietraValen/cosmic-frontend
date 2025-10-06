@@ -47,10 +47,10 @@ export default function TheSolution() {
             </div>
           </div>
 
-          <div className="group relative lg:mt-8">
+          <div className="group relative ">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="relative bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-2xl p-8 hover:border-purple-500/50 transition-all duration-300 h-full">
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center mb-6 lg:mt-8">
                 <div className="p-4 bg-purple-500/20 rounded-2xl">
                   <RefreshCw className="w-12 h-12 text-purple-400" />
                 </div>

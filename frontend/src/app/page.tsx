@@ -1,24 +1,42 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import Hero from "../components/Hero";
-import TheProblem from "../components/TheProblem";
+import TheProblem from "../components/TheProblem"; 
 import TheSolution from "../components/TheSolution";
 import HowItWorks from "../components/HowItWorks";
-import SpectrogramGallery from "../components/SpectrogramGallery";
 import WaveVisualization from "../components/WaveVisualization";
-import Statistics from "../components/Statistics";
-import GlobeVisualization from "../components/GlobeVisualization";
-import GravitationalWavesPropagation from "../components/GravitationalWavesPropagation";
-import InteractiveScientificMap from "../components/InteractiveScientificMap";
-import NeuralNetworkFlow from "../components/NeuralNetworkFlow";
+import CallToAction from "../components/CallToAction";
+import Footer from "@/components/Footer";
 
-function App() {
+// Lazy loading dos componentes mais pesados
+import {
+  LazySpectrogramGallery,
+  LazyStatistics,
+  LazyGlobeVisualization,
+  LazyInteractiveScientificMap,
+  LazyNeuralNetworkFlow,
+} from "../components/LazyComponents";
+
+const App = memo(function App() {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Throttle scroll events for better performance
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", throttledScroll, { passive: true });
+    return () => window.removeEventListener("scroll", throttledScroll);
   }, []);
 
   return (
@@ -39,22 +57,7 @@ function App() {
               trabalhando em conjunto
             </p>
           </div>
-          <GlobeVisualization />
-        </div>
-      </section>
-
-      <section className="relative z-10 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-cyan-500 bg-clip-text text-transparent">
-              Ondas Gravitacionais em Ação
-            </h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">
-              Visualização 3D da propagação de ondas gravitacionais pelo
-              espaço-tempo
-            </p>
-          </div>
-          <GravitationalWavesPropagation />
+          <LazyGlobeVisualization />
         </div>
       </section>
 
@@ -63,7 +66,7 @@ function App() {
 
       <section className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <NeuralNetworkFlow />
+          <LazyNeuralNetworkFlow />
         </div>
       </section>
 
@@ -71,26 +74,18 @@ function App() {
 
       <section className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <InteractiveScientificMap />
+          <LazyInteractiveScientificMap />
         </div>
       </section>
 
-      <SpectrogramGallery />
-      <Statistics />
+      <LazySpectrogramGallery />
+      <LazyStatistics />
 
-      <footer className="relative z-10 border-t border-slate-800 py-12 mt-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-slate-400">
-            <p className="text-lg font-light">Caçadores de Falhas</p>
-            <p className="text-sm mt-2">
-              Desvendando os mistérios do universo através de ondas
-              gravitacionais
-            </p>
-          </div>
-        </div>
-      </footer>
+      <CallToAction />
+
+      <Footer />
     </div>
   );
-}
+});
 
 export default App;
