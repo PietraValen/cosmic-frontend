@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (token && userData) {
         // Verificar se o token ainda é válido com o backend
         try {
-          const response = await fetch("http://localhost:8000/api/user", {
+          const response = await fetch("http://127.0.0.1:8000/api/user", {
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",

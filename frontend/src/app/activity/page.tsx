@@ -70,7 +70,7 @@ export default function ActivityPage() {
     data: apiActivities,
     loading: activitiesLoading,
     error: activitiesError,
-  } = useApi(() => api.getUserActivity({ limit: 50 }), {
+  } = useApi(() => api.getUserActivity(), {
     dependencies: [user],
   });
 

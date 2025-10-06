@@ -2,47 +2,71 @@
 
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 interface AnomalyPointsProps {
   count?: number;
 }
 
-export function AnomalyPoints({ count = 5000 }: AnomalyPointsProps) {
+export function AnomalyPoints({ count = 1000 }: AnomalyPointsProps) {
   const ref = useRef<THREE.Points>(null);
 
-  const positions = useMemo(() => {
+  const [positions, colors] = useMemo(() => {
     const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i++) {
-      // Posições aleatórias
-      positions[i * 3] = (Math.random() - 0.5) * 10;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+      // Posições aleatórias em uma esfera
+      const radius = Math.random() * 50 + 10;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+
+      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = radius * Math.cos(phi);
+
+      // Cores variadas (vermelho para anomalias, azul para estáveis)
+      const isAnomaly = Math.random() > 0.7;
+      if (isAnomaly) {
+        colors[i * 3] = 1; // R
+        colors[i * 3 + 1] = 0.2; // G
+        colors[i * 3 + 2] = 0.2; // B
+      } else {
+        colors[i * 3] = 0.2; // R
+        colors[i * 3 + 1] = 0.6; // G
+        colors[i * 3 + 2] = 1; // B
+      }
     }
 
-    return positions;
+    return [positions, colors];
   }, [count]);
 
   useFrame((state, delta) => {
     if (ref.current) {
-      ref.current.rotation.x -= delta / 10;
-      ref.current.rotation.y -= delta / 15;
+      ref.current.rotation.x += delta * 0.1;
+      ref.current.rotation.y += delta * 0.05;
     }
   });
 
   return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
-        <PointMaterial
-          transparent
-          color="#60a5fa"
-          size={0.005}
-          sizeAttenuation={true}
-          depthWrite={false}
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={positions.length / 3}
+          array={positions}
+          itemSize={3}
+          args={[positions, 3]}
         />
-      </Points>
-    </group>
+        <bufferAttribute
+          attach="attributes-color"
+          count={colors.length / 3}
+          array={colors}
+          itemSize={3}
+          args={[colors, 3]}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.1} vertexColors />
+    </points>
   );
 }

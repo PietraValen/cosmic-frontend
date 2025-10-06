@@ -1,6 +1,7 @@
 "use client";
 import { useState, memo, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Menu,
   X,
@@ -36,8 +37,15 @@ const Header = memo(function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">CF</span>
+              <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-slate-800">
+                <Image
+                  src="/logo.jpeg"
+                  alt="Caçadores de Falhas Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                  priority
+                />
               </div>
               <span className="text-white font-semibold text-lg">
                 Caçadores de Falhas

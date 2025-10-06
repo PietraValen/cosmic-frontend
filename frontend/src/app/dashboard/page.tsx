@@ -1,11 +1,15 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useRequireAuth } from "@/contexts/AuthContext";
 import { useApi } from "@/hooks/useApiOptimized";
 import { api } from "@/services/api";
 import { LoadingSpinner, CardSkeleton } from "@/components/LoadingComponents";
 import { ErrorComponent } from "@/components/ErrorComponents";
+import NewAnalysisModal, {
+  type AnalysisConfig,
+} from "@/components/NewAnalysisModal";
+import ExportModal, { type ExportConfig } from "@/components/ExportModal";
 import Link from "next/link";
 import {
   BarChart3,
@@ -27,6 +31,10 @@ import {
 const DashboardPage = memo(function DashboardPage() {
   const { user, logout, isLoading } = useRequireAuth();
 
+  // Estados para os modais
+  const [isNewAnalysisModalOpen, setIsNewAnalysisModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+
   // API calls using the optimized useApi hook with cache
   const {
     data: stats,
@@ -36,6 +44,7 @@ const DashboardPage = memo(function DashboardPage() {
   } = useApi(() => api.getDashboardStats(), {
     cacheKey: "dashboard-stats",
     cacheTTL: 2 * 60 * 1000, // 2 minutos
+    immediate: !!user && !isLoading,
   });
 
   const {
@@ -43,9 +52,10 @@ const DashboardPage = memo(function DashboardPage() {
     loading: activityLoading,
     error: activityError,
     refetch: refetchActivity,
-  } = useApi(() => api.getUserActivity({ limit: 5 }), {
+  } = useApi(() => api.getUserActivity(), {
     cacheKey: "recent-activity",
     cacheTTL: 1 * 60 * 1000, // 1 minuto
+    immediate: !!user && !isLoading,
   });
 
   const {
@@ -55,7 +65,54 @@ const DashboardPage = memo(function DashboardPage() {
   } = useApi(() => api.getDetectors(), {
     cacheKey: "detectors",
     cacheTTL: 5 * 60 * 1000, // 5 minutos
+    immediate: !!user && !isLoading,
   });
+
+  // Handlers para os modais
+  const handleNewAnalysis = async (config: AnalysisConfig) => {
+    try {
+      console.log("Iniciando nova análise:", config);
+      // Aqui você pode chamar a API para submeter a análise
+      // await api.submitAnalysis(config);
+      alert(
+        `Análise iniciada com sucesso!\nDetector: ${config.detector}\nTipo: ${config.analysisType}`
+      );
+    } catch (error) {
+      console.error("Erro ao iniciar análise:", error);
+      alert("Erro ao iniciar análise. Tente novamente.");
+    }
+  };
+
+  const handleExport = async (config: ExportConfig) => {
+    try {
+      console.log("Iniciando exportação:", config);
+      // Aqui você pode chamar a API para gerar o arquivo
+      // const blob = await api.exportData(config);
+
+      // Simulação de download
+      const filename = `cosmic_export_${config.dataType}_${
+        new Date().toISOString().split("T")[0]
+      }.${config.format}`;
+      alert(
+        `Exportação iniciada!\nArquivo: ${filename}\nFormato: ${config.format.toUpperCase()}\nTipo: ${
+          config.dataType
+        }`
+      );
+
+      // Aqui você faria o download real do arquivo
+      // const url = URL.createObjectURL(blob);
+      // const a = document.createElement('a');
+      // a.href = url;
+      // a.download = filename;
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+      // URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erro ao exportar dados:", error);
+      alert("Erro ao exportar dados. Tente novamente.");
+    }
+  };
 
   // Loading state
   if (isLoading || statsLoading) {
@@ -220,11 +277,17 @@ const DashboardPage = memo(function DashboardPage() {
               </p>
             </div>
             <div className="flex gap-3">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+              <button
+                onClick={() => setIsNewAnalysisModalOpen(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+              >
                 <Plus className="w-4 h-4" />
                 Nova Análise
               </button>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+              <button
+                onClick={() => setIsExportModalOpen(true)}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+              >
                 <Download className="w-4 h-4" />
                 Exportar
               </button>
@@ -587,6 +650,19 @@ const DashboardPage = memo(function DashboardPage() {
           </div>
         </div>
       </main>
+
+      {/* Modais */}
+      <NewAnalysisModal
+        isOpen={isNewAnalysisModalOpen}
+        onClose={() => setIsNewAnalysisModalOpen(false)}
+        onSubmit={handleNewAnalysis}
+      />
+
+      <ExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        onExport={handleExport}
+      />
     </div>
   );
 });

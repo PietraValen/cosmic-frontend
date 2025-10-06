@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import AnomalyMap  from "@/components/AnomalyMap";
+import AnomalyMap from "@/components/AnomalyMap";
 
 export default function Galaxy3DPage() {
   return (
@@ -38,10 +38,12 @@ export default function Galaxy3DPage() {
       </div>
 
       {/* Canvas 3D */}
-      <Canvas camera={{ position: [0, 0, 80], fov: 60 }}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
-        <AnomalyMap/>
+      <Canvas
+        camera={{ position: [0, 0, 80], fov: 60 }}
+        gl={{ antialias: true, alpha: true }}
+        className="w-full h-full"
+      >
+        <AnomalyMap />
       </Canvas>
 
       {/* Loading overlay */}

@@ -18,7 +18,7 @@ export default function TestConnectionPage() {
         (prev) => prev + "\n🔍 Verificando se Laravel está acessível...\n"
       );
 
-      const healthCheck = await fetch("http://localhost:8000", {
+      const healthCheck = await fetch("http://127.0.0.1:8000", {
         method: "GET",
         mode: "cors",
       });
@@ -30,7 +30,7 @@ export default function TestConnectionPage() {
       // Teste 1: Verificar endpoint de login
       setResult((prev) => prev + "\n🔍 Testando endpoint de login...\n");
 
-      const response = await fetch("http://localhost:8000/api/login", {
+      const response = await fetch("http://127.0.0.1:8000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function TestConnectionPage() {
     setResult("Verificando acesso ao Laravel...\n");
 
     try {
-      const response = await fetch("http://localhost:8000", {
+      const response = await fetch("http://127.0.0.1:8000", {
         method: "GET",
         mode: "cors",
       });

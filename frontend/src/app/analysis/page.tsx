@@ -30,26 +30,32 @@ import {
 export default function AnalysisPage() {
   const { user, isLoading } = useRequireAuth();
 
-  // API calls usando hooks personalizados
+  // API calls usando hooks personalizados - só executa se usuário estiver autenticado
   const {
     data: realtimeData,
     loading: realtimeLoading,
     error: realtimeError,
     refetch: refetchRealtime,
-  } = useApi(() => api.getRealtimeAnalysis());
+  } = useApi(() => api.getRealtimeAnalysis(), {
+    immediate: !!user && !isLoading,
+  });
 
   const {
     data: glitches,
     loading: glitchesLoading,
     error: glitchesError,
     refetch: refetchGlitches,
-  } = useApi(() => api.getGlitches({ limit: 10 }));
+  } = useApi(() => api.getGlitches({ limit: 10 }), {
+    immediate: !!user && !isLoading,
+  });
 
   const {
     data: detectors,
     loading: detectorsLoading,
     error: detectorsError,
-  } = useApi(() => api.getDetectors());
+  } = useApi(() => api.getDetectors(), {
+    immediate: !!user && !isLoading,
+  });
 
   // Estados locais
   const [selectedDetector, setSelectedDetector] = useState<string>("");
@@ -75,15 +81,26 @@ export default function AnalysisPage() {
   }
 
   // Error state
-  if (realtimeError) {
+  if (realtimeError || glitchesError) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <ErrorComponent
-            error={realtimeError}
-            onRetry={refetchRealtime}
-            type="general"
-          />
+          {realtimeError && (
+            <ErrorComponent
+              error={realtimeError}
+              onRetry={refetchRealtime}
+              type="general"
+            />
+          )}
+          {glitchesError && (
+            <div className="mt-4">
+              <ErrorComponent
+                error={glitchesError}
+                onRetry={refetchGlitches}
+                type="general"
+              />
+            </div>
+          )}
         </div>
       </div>
     );

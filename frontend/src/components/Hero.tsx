@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Waves } from "lucide-react";
+import Link from "next/link";
+import { Waves, ChevronDown } from "lucide-react";
 
 interface HeroProps {
   scrollY: number;
@@ -96,7 +97,7 @@ export default function Hero({ scrollY }: HeroProps) {
             </Link>
           </div>
           <Link
-            href="KnowMore"
+            href="/KnowMore"
             className="px-8 py-4 bg-slate-800 hover:bg-slate-700 rounded-lg font-semibold text-lg transition-all duration-300 border border-slate-700"
           >
             Saiba Mais
@@ -120,13 +121,6 @@ export default function Hero({ scrollY }: HeroProps) {
             <span>Criar conta gratuita</span>
           </Link>
         </div> */}
-
-<<<<<<< HEAD
-        {/* <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-slate-400" />
-        </div> */}
-=======
->>>>>>> explorer
       </div>
     </section>
   );

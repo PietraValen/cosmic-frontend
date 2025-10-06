@@ -49,9 +49,9 @@ export default function ComoFuncionaPage() {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Entenda o processo completo desde a coleta de dados dos detectores de ondas 
-            gravitacionais até a identificação e classificação de interferências através 
-            da colaboração entre IA e ciência cidadã.
+            Entenda o processo completo desde a coleta de dados dos detectores
+            de ondas gravitacionais até a identificação e classificação de
+            interferências através da colaboração entre IA e ciência cidadã.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export default function ComoFuncionaPage() {
           <h3 className="text-3xl font-bold text-white text-center mb-12">
             Processo de Detecção
           </h3>
-          
+
           {/* Step 1 */}
           <div className="flex flex-col lg:flex-row items-center mb-12">
             <div className="lg:w-1/2 mb-8 lg:mb-0">
@@ -69,12 +69,15 @@ export default function ComoFuncionaPage() {
                   <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     1
                   </div>
-                  <h4 className="text-2xl font-bold text-white">Coleta de Dados</h4>
+                  <h4 className="text-2xl font-bold text-white">
+                    Coleta de Dados
+                  </h4>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-4">
-                  Os detectores LIGO e Virgo capturam dados contínuos de ondas gravitacionais. 
-                  Estes dados contêm tanto sinais científicos genuínos quanto interferências 
-                  técnicas (glitches) que precisam ser identificadas e removidas.
+                  Os detectores LIGO e Virgo capturam dados contínuos de ondas
+                  gravitacionais. Estes dados contêm tanto sinais científicos
+                  genuínos quanto interferências técnicas (glitches) que
+                  precisam ser identificadas e removidas.
                 </p>
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center space-x-2">
@@ -112,12 +115,15 @@ export default function ComoFuncionaPage() {
                   <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     2
                   </div>
-                  <h4 className="text-2xl font-bold text-white">Análise por IA</h4>
+                  <h4 className="text-2xl font-bold text-white">
+                    Análise por IA
+                  </h4>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-4">
-                  Algoritmos de inteligência artificial analisam os dados automaticamente, 
-                  identificando padrões suspeitos que podem indicar glitches. O sistema 
-                  usa redes neurais treinadas com milhões de exemplos.
+                  Algoritmos de inteligência artificial analisam os dados
+                  automaticamente, identificando padrões suspeitos que podem
+                  indicar glitches. O sistema usa redes neurais treinadas com
+                  milhões de exemplos.
                 </p>
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center space-x-2">
@@ -155,12 +161,14 @@ export default function ComoFuncionaPage() {
                   <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     3
                   </div>
-                  <h4 className="text-2xl font-bold text-white">Validação Humana</h4>
+                  <h4 className="text-2xl font-bold text-white">
+                    Validação Humana
+                  </h4>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-4">
-                  Cientistas cidadãos revisam as detecções da IA, validando ou corrigindo 
-                  as classificações. Esta colaboração homem-máquina garante alta precisão 
-                  e melhora continuamente o sistema.
+                  Cientistas cidadãos revisam as detecções da IA, validando ou
+                  corrigindo as classificações. Esta colaboração homem-máquina
+                  garante alta precisão e melhora continuamente o sistema.
                 </p>
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center space-x-2">
@@ -198,7 +206,7 @@ export default function ComoFuncionaPage() {
                 Visualizador de Espectrogramas
               </h4>
               <p className="text-gray-300 text-sm">
-                Interface interativa para visualizar e analisar dados de ondas 
+                Interface interativa para visualizar e analisar dados de ondas
                 gravitacionais em formato de espectrograma.
               </p>
             </div>
@@ -209,7 +217,7 @@ export default function ComoFuncionaPage() {
                 Dashboard de Análise
               </h4>
               <p className="text-gray-300 text-sm">
-                Painel completo com estatísticas, métricas de performance e 
+                Painel completo com estatísticas, métricas de performance e
                 histórico de detecções em tempo real.
               </p>
             </div>
@@ -220,7 +228,7 @@ export default function ComoFuncionaPage() {
                 Sistema de Classificação
               </h4>
               <p className="text-gray-300 text-sm">
-                Ferramentas para classificar diferentes tipos de glitches e 
+                Ferramentas para classificar diferentes tipos de glitches e
                 contribuir para o treinamento da IA.
               </p>
             </div>
@@ -231,7 +239,7 @@ export default function ComoFuncionaPage() {
                 Colaboração
               </h4>
               <p className="text-gray-300 text-sm">
-                Recursos para colaborar com outros cientistas cidadãos e 
+                Recursos para colaborar com outros cientistas cidadãos e
                 compartilhar descobertas.
               </p>
             </div>
@@ -242,8 +250,8 @@ export default function ComoFuncionaPage() {
                 Relatórios
               </h4>
               <p className="text-gray-300 text-sm">
-                Geração de relatórios detalhados sobre análises realizadas 
-                e resultados obtidos.
+                Geração de relatórios detalhados sobre análises realizadas e
+                resultados obtidos.
               </p>
             </div>
 
@@ -253,7 +261,7 @@ export default function ComoFuncionaPage() {
                 Tempo Real
               </h4>
               <p className="text-gray-300 text-sm">
-                Monitoramento em tempo real dos detectores e notificações 
+                Monitoramento em tempo real dos detectores e notificações
                 imediatas de eventos importantes.
               </p>
             </div>
@@ -273,24 +281,38 @@ export default function ComoFuncionaPage() {
                 </h4>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">1</div>
+                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">
+                      1
+                    </div>
                     <div>
                       <p className="text-white font-medium">Crie sua conta</p>
-                      <p className="text-gray-300 text-sm">Registre-se gratuitamente na plataforma</p>
+                      <p className="text-gray-300 text-sm">
+                        Registre-se gratuitamente na plataforma
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">2</div>
+                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">
+                      2
+                    </div>
                     <div>
                       <p className="text-white font-medium">Faça o tutorial</p>
-                      <p className="text-gray-300 text-sm">Aprenda sobre ondas gravitacionais e glitches</p>
+                      <p className="text-gray-300 text-sm">
+                        Aprenda sobre ondas gravitacionais e glitches
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">3</div>
+                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">
+                      3
+                    </div>
                     <div>
-                      <p className="text-white font-medium">Comece a classificar</p>
-                      <p className="text-gray-300 text-sm">Analise seus primeiros espectrogramas</p>
+                      <p className="text-white font-medium">
+                        Comece a classificar
+                      </p>
+                      <p className="text-gray-300 text-sm">
+                        Analise seus primeiros espectrogramas
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -302,24 +324,42 @@ export default function ComoFuncionaPage() {
                 </h4>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">1</div>
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">
+                      1
+                    </div>
                     <div>
-                      <p className="text-white font-medium">Acesse dados brutos</p>
-                      <p className="text-gray-300 text-sm">Trabalhe com dados não processados</p>
+                      <p className="text-white font-medium">
+                        Acesse dados brutos
+                      </p>
+                      <p className="text-gray-300 text-sm">
+                        Trabalhe com dados não processados
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">2</div>
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">
+                      2
+                    </div>
                     <div>
-                      <p className="text-white font-medium">Desenvolva algoritmos</p>
-                      <p className="text-gray-300 text-sm">Contribua com novos métodos de detecção</p>
+                      <p className="text-white font-medium">
+                        Desenvolva algoritmos
+                      </p>
+                      <p className="text-gray-300 text-sm">
+                        Contribua com novos métodos de detecção
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">3</div>
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">
+                      3
+                    </div>
                     <div>
-                      <p className="text-white font-medium">Colabore em pesquisas</p>
-                      <p className="text-gray-300 text-sm">Participe de projetos de pesquisa científica</p>
+                      <p className="text-white font-medium">
+                        Colabore em pesquisas
+                      </p>
+                      <p className="text-gray-300 text-sm">
+                        Participe de projetos de pesquisa científica
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -334,19 +374,19 @@ export default function ComoFuncionaPage() {
             Pronto para Começar?
           </h3>
           <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Junte-se a milhares de cientistas cidadãos ao redor do mundo na busca 
-            por descobertas revolucionárias sobre o universo.
+            Junte-se a milhares de cientistas cidadãos ao redor do mundo na
+            busca por descobertas revolucionárias sobre o universo.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/auth/register"
               className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors font-medium"
             >
-              <span>Criar Conta Gratuita</span>
+              <span>Criar Conta</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
-            
+
             <Link
               href="/dashboard"
               className="inline-flex items-center space-x-2 bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-lg transition-colors font-medium border border-white/20"
