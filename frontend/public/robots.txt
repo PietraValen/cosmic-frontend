@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://cacadores-de-falhas.vercel.app/sitemap.xml
+
+# Disallow admin areas (if any in the future)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /debug*/
+Disallow: /test*/
+
+# Allow specific important pages
+Allow: /
+Allow: /Explore
+Allow: /KnowMore
+Allow: /projeto
+Allow: /como-funciona
+Allow: /sobre
+Allow: /auth/
+Allow: /dashboard
+Allow: /analysis
+Allow: /spectrograms
+Allow: /reports
+Allow: /activity
+Allow: /profile
