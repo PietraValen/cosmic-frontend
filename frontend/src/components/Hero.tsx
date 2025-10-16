@@ -1,11 +1,15 @@
-"use client";
+// frontend/src/components/Hero.tsx
+
+"use client"; // Esta diretiva é necessária aqui pois o componente usa hooks
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Waves, ChevronDown } from "lucide-react";
 
-interface HeroProps {
-  scrollY: number;
-}
+// REMOVIDO: A interface não precisa mais da prop scrollY
+// interface HeroProps {
+//   scrollY: number;
+// }
 
 interface Particle {
   left: string;
@@ -16,12 +20,16 @@ interface Particle {
   animationDuration: string;
 }
 
-export default function Hero({ scrollY }: HeroProps) {
+// REMOVIDO: A prop scrollY não é mais recebida
+export default function Hero() {
+  // ADICIONADO: Estado para gerenciar o scroll internamente
+  const [scrollY, setScrollY] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [isClient, setIsClient] = useState(false);
   const parallaxOffset = scrollY * 0.5;
 
   useEffect(() => {
+    // A lógica de partículas e isClient continua perfeita
     setIsClient(true);
     const generatedParticles = [...Array(50)].map(() => ({
       left: `${Math.random() * 100}%`,
@@ -32,10 +40,28 @@ export default function Hero({ scrollY }: HeroProps) {
       animationDuration: `${Math.random() * 3 + 2}s`,
     }));
     setParticles(generatedParticles);
-  }, []);
+
+    // ADICIONADO: Lógica de scroll que antes estava no componente pai
+    const handleScroll = () => setScrollY(window.scrollY);
+
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", throttledScroll, { passive: true });
+    return () => window.removeEventListener("scroll", throttledScroll);
+  }, []); // O array de dependências vazio está correto, executa uma vez
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+      {/* O resto do seu JSX continua exatamente o mesmo, pois já é excelente */}
       <div
         className="absolute inset-0 z-0"
         style={{ transform: `translateY(${parallaxOffset}px)` }}
@@ -103,24 +129,6 @@ export default function Hero({ scrollY }: HeroProps) {
             Saiba Mais
           </Link>
         </div>
-
-        {/* Auth Buttons */}
-        {/* <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <Link
-            href="/auth/login"
-            className="flex items-center space-x-2 px-6 py-3 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-600 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-slate-500/20"
-          >
-            <LogIn className="w-5 h-5" />
-            <span>Já tenho conta</span>
-          </Link>
-          <Link
-            href="/auth/register"
-            className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-purple-500/30"
-          >
-            <UserPlus className="w-5 h-5" />
-            <span>Criar conta gratuita</span>
-          </Link>
-        </div> */}
       </div>
     </section>
   );

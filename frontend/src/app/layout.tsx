@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
 
+// Configuração das fontes usando next/font para otimização automática
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -16,6 +17,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+// Configuração da viewport para responsividade
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -24,6 +26,22 @@ export const viewport: Viewport = {
   themeColor: "#0f172a",
 };
 
+// Objeto para os Dados Estruturados (JSON-LD) para manter o código principal limpo
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Caçadores de Falhas",
+  description: "Plataforma de detecção de ondas gravitacionais",
+  url: "https://cacadores-de-falhas.vercel.app",
+  potentialAction: {
+    "@type": "SearchAction",
+    target:
+      "https://cacadores-de-falhas.vercel.app/search?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+};
+
+// Metadados do site para SEO e compartilhamento em redes sociais
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
@@ -101,10 +119,15 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "your-google-verification-code", // Lembre-se de adicionar seu código de verificação do Google
+  },
+  // Injetando o script de dados estruturados da forma correta via metadados
+  other: {
+    "application/ld+json": JSON.stringify(structuredData),
   },
 };
 
+// Componente RootLayout que envolve toda a aplicação
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -112,27 +135,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" dir="ltr">
-      <head>
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "Caçadores de Falhas",
-              description: "Plataforma de detecção de ondas gravitacionais",
-              url: "https://cacadores-de-falhas.vercel.app",
-              potentialAction: {
-                "@type": "SearchAction",
-                target:
-                  "https://cacadores-de-falhas.vercel.app/search?q={search_term_string}",
-                "query-input": "required name=search_term_string",
-              },
-            }),
-          }}
-        />
-      </head>
+      {/*
+        A tag <head> não é necessária aqui.
+        O Next.js a gerará automaticamente usando o objeto 'metadata' exportado acima.
+      */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-900 text-white`}
         suppressHydrationWarning
